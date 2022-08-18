@@ -78,9 +78,29 @@
       border-radius: 50%;
       overflow: hidden;
       cursor: pointer;
+      color: #666;
+    }
+    #reload.active {
+      background-color: #1FB0F9;
+      color: #FFF;
     }
     #draft {
       display: none;
+    }
+    #editor {
+      position: relative;
+    }
+    #reset {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      cursor: pointer;
+      z-index: 99;
+      background-color: #1FB0F9;
+      font-size: 12px;
+      color: #FFF;
+      padding: 5px 10px;
+      margin: 3px;
     }
     footer {
       width: 100%;
@@ -105,9 +125,10 @@
   <div id="main">
     <div id="player"></div>
     <div id="reload">
-      <?xml version="1.0" encoding="UTF-8"?><svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="#4a4a4a" stroke-width="3" stroke-linejoin="round"/><path d="M27 33L18 24L27 15" stroke="#4a4a4a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <?xml version="1.0" encoding="UTF-8"?><svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M27 33L18 24L27 15" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
     <div id="editor">
+      <div id="reset">Reset</div>
       <textarea id="draft">
 <miraml>
   <canvas width="640" height="640">
@@ -143,6 +164,7 @@
       };
     }
 
+    const $reld = document.getElementById('reload');
     const $edtr = document.getElementById('editor');
     const editor = monaco.editor.create($edtr, {
       model: null,
@@ -175,7 +197,8 @@
 
     editor.onDidChangeModelContent((e) => {
       draft[selected.key] = editor.getValue();
-      localStorage.setItem(draftKey, JSON.stringify(draft));
+      $reld.classList.add('active');
+      saveDraft();
     });
 
     const $plyr = document.getElementById('player');
@@ -183,20 +206,36 @@
       value: selected.model.getValue()
     });
 
-    const reloaded = (e) => {
+    const saveDraft = () => {
+      localStorage.setItem(draftKey, JSON.stringify(draft));
+    }
+
+    const reloaded = (save) => {
       const creator = player.player.creator;
       draft.json = JSON.stringify(creator.toJson(), null, 2);
       //draft.miraml = creator.toMiraML();
-      localStorage.setItem(draftKey, JSON.stringify(draft));
+      if (save) saveDraft();
       for (const item of tabs) {
         item.model.setValue(draft[item.key]);
       }
+      $reld.classList.remove('active');
     }
 
-    player.on('loadedmetadata', (e) => reloaded(e));
+    player.on('loadedmetadata', (e) => reloaded(false));
     document.getElementById('reload').onclick = async () => {
       await player.load({value: selected.model.getValue()});
-      player.on('loadedmetadata', (e) => reloaded(e));
+      player.on('loadedmetadata', (e) => reloaded(true));
     }
+
+    document.getElementById('reset').onclick = async () => {
+      draft = { 
+        miraml: document.getElementById('draft').value,
+        json: '',
+      };
+      localStorage.setItem(draftKey, draft);
+      await player.load({value: draft.miraml});
+      player.on('loadedmetadata', (e) => reloaded(false));
+    }
+
   </script>
 </body>
