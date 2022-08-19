@@ -1,1 +1,118 @@
-Hello from MiraVideo Team
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mira Video</title>
+  <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?">
+</head>
+<body>
+  <style>
+    html, body { 
+      margin: 0;
+      padding: 0;
+      font-family: 'Monaco';
+      height: 86%;
+      width: 100%;
+    }
+    nav {
+      display: flex;
+      width: 100%;
+      background:#1FB0F9;
+      color: #FFF;
+    }
+    #nav-title {
+      font-weight: bolder;
+      font-size: 26px;
+      margin: 10px 20px;
+      cursor: default;
+    }
+    #nav-subtitle {
+      font-size: 12px;
+      margin: 26px 0 0 0px;
+      cursor: default;
+    }
+    #gh-link {
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 10;
+    }
+    #tab {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+    #tab .item {
+      width: 80px;
+      padding: 10px;
+      margin: 20px 0;
+      border: 1px solid #1FB0F9;
+      text-align: center;
+      cursor: pointer;
+      color: #666;
+    }
+    #tab .item.select {
+      background: #1FB0F9;
+      color: #FFF;
+    }
+    #main {
+      margin: 20px;
+      height: 90%;
+      min-height: 320px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #editor, #player {
+      width: 45%;
+      height: 70%;
+      min-width: 500px;
+      min-height: 380px;
+      border: 1px solid #ccc;
+    }
+    .sec-title {
+      padding: 10px;
+      text-align: center;
+      font-size: 20px;
+      color: #1FB0F9;
+    }
+    img {
+      width: 100%;
+      top: 50%;
+      max-height: 300px;
+    }
+    a {
+      text-decoration: none;
+    }
+    footer {
+      width: 100%;
+      margin: 30px 0;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      cursor: default;
+    }
+  </style>
+  <nav>
+    <span id="nav-title">MiraVideo</span>
+    <span id="nav-subtitle">AI & Video</span>
+  </nav>
+  <div id="main">
+    <div id="player">
+      <a href="./mira-player/">
+        <div class="sec-title">Mira Player</div>
+        <img src="./static/player.png">
+      </a>
+    </div>
+    <div id="editor">
+      <a href="./mira-editor/">
+        <div class="sec-title">Mira Editor</div>
+        <img src="./static/editor.png">
+      </a>
+    </div>
+  </div>
+  <footer>
+    © 2021-2022 MiraVideo
+  </footer>
+</body>
