@@ -286,7 +286,8 @@
         json: '',
       };
       localStorage.setItem(draftKey, draft);
-      await player.load({value: draft.miraml});
+      opts.value = draft.miraml;
+      await player.load(opts);
       player.on('ready', (e) => reloaded(false));
     }
 
