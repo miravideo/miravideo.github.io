@@ -1,0 +1,46 @@
+<miraml author="ZhaoJun" name="Composite">
+  <canvas width="1280" height="720">
+    <spine>
+      <text fontSize="80rpx" color="#FFF" x="50vw" y="50vh" lineHeight="90%" letterSpacing="10%" fontFamily="https://miravideo.github.io/static/FangZhengHeiTi.ttf" duration="2" height="96.750rpx" width="323.156rpx" viewWidth="404%" viewHeight="121%">
+        <audio audio="true" src="https://miravideo.github.io/static/ReadyGo.mp3"></audio>
+        <content>Ready?</content>
+        <stroke color="#FFF" size="5%"></stroke>
+        <shadow color="#1FB0F9" alpha="1" offset="5%"></shadow>
+      </text>
+      <trans duration="1.5" key="fadecolor"></trans>
+      <scene>
+        <video loop="false" audio="false" x="50vw" y="50vh" height="100vh" zIndex="2" src="https://miravideo.github.io/static/oceans.mp4" preload="true" duration="10" ss="2">
+          <text fontSize="100rpx" color="#FFF" x="50vw" y="50vh" lineHeight="90%" fontFamily="https://miravideo.github.io/static/FangZhengHeiTi.ttf" asMask="true" duration="4" height="115.875rpx" width="360rpx" viewWidth="360%" viewHeight="116%">
+            <content>OCEAN</content>
+            <stroke color="#FFF" size="5%"></stroke>
+            <animate time="2" delay="2">
+              <from scale="1"></from>
+              <to scale="30" y="1500"></to>
+            </animate>
+          </text>
+          <animate time="0.5" delay="5">
+            <from scale="1"></from>
+            <to scale="0.2" y="150" x="250"></to>
+          </animate>
+          <animate time="0.5" delay="9">
+            <from x="50"></from>
+            <to x="-300"></to>
+          </animate>
+        </video>
+        <video loop="false" audio="false" x="50vw" y="50vh" width="100vw" height="100vh" src="https://miravideo.github.io/static/oceans.mp4" preload="true" start="5" duration="5" ss="20"></video>
+      </scene>
+      <trans duration="1" key="fade"></trans>
+      <video loop="false" audio="false" x="50vw" y="50vh" width="100vw" height="100vh" src="https://miravideo.github.io/static/oceans.mp4" preload="true" duration="5" ss="30" blur="10">
+        <text fontSize="60rpx" color="#FFF" x="50vw" y="45vh" lineHeight="90%" fontFamily="https://miravideo.github.io/static/FangZhengHeiTi.ttf" effect="zoomInDown" effectTime="1" opacity="0.8" height="69.750rpx" width="305.719rpx" viewWidth="510%" viewHeight="116%">
+          <content>Mira Player</content>
+          <stroke color="#FFF" size="5%"></stroke>
+        </text>
+        <text fontSize="20rpx" color="#FFF" x="50vw" y="70vh" lineHeight="90%" fontFamily="https://miravideo.github.io/static/FangZhengHeiTi.ttf" effect="zoomInUp" effectTime="1" opacity="0.6" height="23.625rpx" width="205.313rpx" viewWidth="1027%" viewHeight="118%">
+          <content>Powered By FFCreator</content>
+          <stroke color="#FFF" size="5%"></stroke>
+        </text>
+      </video>
+    </spine>
+    <audio audio="true" src="https://miravideo.github.io/static/oceans.mp3" duration="17" fadeOut="1"></audio>
+  </canvas>
+</miraml>
