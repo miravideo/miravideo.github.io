@@ -1,0 +1,67 @@
+<miraml version="1.1">
+  <canvas width="720" height="1280">
+    <image x="50vw" y="50vh" width="100vw" height="100vh" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/sample_g2.jpg" blur="20"></image>
+    <spine>
+      <image x="50vw" y="50vh" width="100vw" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/face_girl.png" duration="3">
+        <effect name="zoomOutDown" time="1" delay="2"></effect>
+      </image>
+      <image x="50vw" y="50vh" width="100vw" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/face_girl.png" duration="3">
+        <effect name="zoomInDown" time="1"></effect>
+        <effect name="zoomOutDown" time="1" delay="2"></effect>
+      </image>
+      <image x="50vw" y="50vh" width="100vw" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/face_girl.png" duration="3">
+        <effect name="zoomInDown" time="1"></effect>
+        <effect name="zoomOutDown" time="1" delay="2"></effect>
+      </image>
+    </spine>
+    <audio audio="true" src="https://afu-1255830993.cos.ap-shanghai.myqcloud.com/files/7b/31/7b31a73068549965fdb85c29c81b39ed.mp3" loop="true" fadeOut="1"></audio>
+    <text wrap="true" width="80vw" fontSize="20rpx" color="#FFFFFF" x="50vw" y="10vh" lineHeight="120%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf">
+      <content>上海某科技有限公司</content>
+      <stroke color="#111111" size="10%"></stroke>
+    </text>
+    <text fontSize="60rpx" color="#F8E54D" x="50vw" y="20vh" lineHeight="90%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" width="323.500rpx">
+      <content>招聘启示</content>
+      <stroke color="#111111" size="10%"></stroke>
+    </text>
+    <text duration="6" backgroundColor="#F8E54D" fontSize="25rpx" color="#000" x="50vw" y="30vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" width="323.500rpx">
+      <text fontSize="35rpx" color="#FFF" x="50vw" y="38vh" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" width="323.500rpx">
+        <content>高级网络工程师</content>
+        <stroke color="#111111" size="10%"></stroke>
+        <effect name="zoomInDown" time="1"></effect>
+      </text>
+      <content> 职位 </content>
+    </text>
+    <text duration="6" backgroundColor="#F8E54D" fontSize="25rpx" color="#000" x="50vw" y="50vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" width="323.500rpx">
+      <text fontSize="38rpx" color="#FFF" x="50vw" y="58vh" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" width="323.500rpx">
+        <content>3000-18000/月</content>
+        <stroke color="#111111" size="10%"></stroke>
+        <effect name="zoomInDown" time="1" delay="1"></effect>
+      </text>
+      <content> 薪资 </content>
+    </text>
+    <text duration="6" backgroundColor="#F8E54D" fontSize="25rpx" color="#000" x="50vw" y="70vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" width="323.500rpx">
+      <text wrap="true" width="80vw" fontSize="20rpx" color="#FFF" x="50vw" y="78vh" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf">
+        <content>五险一金 包吃包住 带薪年假 年底双薪</content>
+        <stroke color="#111111" size="10%"></stroke>
+        <effect name="zoomInDown" time="1" delay="2"></effect>
+      </text>
+      <content> 福利待遇 </content>
+    </text>
+    <text duration="6" backgroundColor="#F8E54D" fontSize="25rpx" color="#000" x="50vw" y="50vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" width="323.500rpx">
+      <text fontSize="38rpx" color="#FFF" x="50vw" y="58vh" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" width="323.500rpx">
+        <content>3000-18000/月</content>
+        <stroke color="#111111" size="10%"></stroke>
+        <effect name="zoomInDown" time="1" delay="1"></effect>
+      </text>
+      <content> 薪资 </content>
+    </text>
+    <text start="6" backgroundColor="#F8E54D" fontSize="25rpx" color="#000" x="50vw" y="30vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" width="323.500rpx">
+      <text fontSize="35rpx" color="#FFF" x="50vw" y="38vh" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" width="323.500rpx">
+        <content>138-1888-1888</content>
+        <stroke color="#111111" size="10%"></stroke>
+        <effect name="zoomInDown" time="1"></effect>
+      </text>
+      <content> 有意请联系 </content>
+    </text>
+  </canvas>
+</miraml>
