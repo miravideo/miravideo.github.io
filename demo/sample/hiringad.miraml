@@ -1,4 +1,4 @@
-<miraml version="1.1">
+<miraml version="1.1" author="ZhaoJun" name="Hiring Ad">
   <canvas width="720" height="1280">
     <image x="50vw" y="50vh" width="100vw" height="100vh" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/sample_g2.jpg" blur="20"></image>
     <spine>

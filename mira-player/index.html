@@ -167,14 +167,12 @@
     const getMeta = async (path) => {
       const url = `https://api.github.com/repos/miravideo/miravideo.github.io/contents/${path}`;
       const res = await (await fetch(url)).json();
-      const list = [];
-      for (const item of res) {
-        const res = await (await fetch(item.url)).json();
-        const content = atob(res.content);
+      const fromContent = (item) => {
+        const content = atob(item.content);
         let meta = {};
         if (item.name.endsWith('.miraml')) {
           const oDOM = parser.parseFromString(content, "application/xml");
-          if (oDOM.documentElement.nodeName.toLowerCase() !== 'miraml') continue;
+          if (oDOM.documentElement.nodeName.toLowerCase() !== 'miraml') return;
           for (let i = 0; i < oDOM.documentElement.attributes.length; i++) {
             const attr = oDOM.documentElement.attributes[i]
             meta[attr.name] = attr.value;
@@ -185,8 +183,17 @@
           const {author, name, description} = json;
           meta = {author, name, description, json};
         }
-        if (!meta.author) continue;
+        if (!meta.author) return;
         meta.name = meta.name || item.name;
+        return meta;
+      }
+
+      if (!Array.isArray(res) && res.content) return fromContent(res);
+      const list = [];
+      for (const item of res) {
+        const res = await (await fetch(item.url)).json();
+        const meta = fromContent(res);
+        if (!meta) continue;
         list.push(meta);
       }
       return list;
@@ -200,7 +207,7 @@
         localStorage.setItem('miraplayer-demos', null);
       }
       const time = localStorage.getItem('miraplayer-demos-updated');
-      if (time && Date.now() - time < 86400 && demos.length > 0) return demos;
+      if (time && Date.now() - time < 3600*1000 && demos.length > 0) return demos;
 
       demos = [];
       const listUrl = 'https://api.github.com/repos/miravideo/miravideo.github.io/contents/demo';
@@ -215,8 +222,8 @@
     }
 
     (async () => {
-      if (!demo) {
-        demo = (await getMeta('demo/Mask and transition'))[0];
+      if (!demo || !(demo.json || demo.miraml)) {
+        demo = await getMeta('demo/sample/mask.miraml');
         localStorage.setItem(demoKey, JSON.stringify(demo));
       }
 
