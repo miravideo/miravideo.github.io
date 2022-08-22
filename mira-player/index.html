@@ -142,7 +142,7 @@
   </footer>
   <script>var require = { paths: { 'vs': '../monaco/min/vs' } };</script>
   <!-- <script src="http://localhost:9988/dist/miraplayer.js"></script> -->
-  <script src="./miraplayer.min.1_3_2.js"></script>
+  <script src="./miraplayer.min.1_3_3.js"></script>
   <script src="../monaco/min/vs/loader.js"></script>
   <script src="../monaco/min/vs/editor/editor.main.nls.js"></script>
   <script src="../monaco/min/vs/editor/editor.main.js"></script>
@@ -272,8 +272,8 @@
 
       const reloaded = (save) => {
         const creator = player.player.creator;
-        draft.json = JSON.stringify(creator.toJson(), null, 2);
-        draft.miraml = creator.toMiraML();
+        draft.json = JSON.stringify(creator.toJson(true), null, 2);
+        draft.miraml = creator.toMiraML(true);
         if (save) saveDraft();
         for (const item of tabs) {
           item.model.setValue(draft[item.key]);
@@ -314,9 +314,9 @@
       $edtr.addEventListener('keyup', (e) => {
         e.stopPropagation();
       });
-    })();
 
-    document.getElementById('version').innerHTML = player.version;
+      document.getElementById('version').innerHTML = player.version;
+    })();
 
     (async () => {
       const list = await demoList();
