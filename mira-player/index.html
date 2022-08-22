@@ -38,6 +38,15 @@
       top: 0;
       z-index: 10;
     }
+    #demos {
+      padding: 10px;
+      margin: 20px;
+      height: 100px; 
+      position: absolute; 
+    }
+    #select {
+      display: inline-block;
+    }
     #tab {
       display: flex;
       flex-direction: row;
@@ -123,6 +132,7 @@
     <span id="nav-title">Mira Player</span>
     <span id="nav-subtitle">powered by FFCreator</span>
   </nav>
+  <div id="demos">Select demos: <select id="select"></select></div>
   <div id="tab">
     <div class="item select" id="tab-miraml">MiraML</div>
     <div class="item" id="tab-json">JSON</div>
@@ -147,6 +157,18 @@
   <script src="../monaco/min/vs/editor/editor.main.nls.js"></script>
   <script src="../monaco/min/vs/editor/editor.main.js"></script>
   <script>
+    let player, editor;
+
+    const tabs = [
+      {key: 'miraml', type: 'xml'},
+      {key: 'json', type: 'json'}
+    ];
+    let selected = tabs[0];
+
+    const $plyr = document.getElementById('player');
+    const $reset = document.getElementById('reset');
+    const $reld = document.getElementById('reload');
+    const $edtr = document.getElementById('editor');
     const parser = new DOMParser();
     const draftKey = 'mira-player-draft';
     let draft;
@@ -168,7 +190,7 @@
       const url = `https://api.github.com/repos/miravideo/miravideo.github.io/contents/${path}`;
       const res = await (await fetch(url)).json();
       const fromContent = (item) => {
-        const content = atob(item.content);
+        const content = decodeURIComponent(escape(atob(item.content)));
         let meta = {};
         if (item.name.endsWith('.miraml')) {
           const oDOM = parser.parseFromString(content, "application/xml");
@@ -185,6 +207,7 @@
         }
         if (!meta.author) return;
         meta.name = meta.name || item.name;
+        meta.path = item.path;
         return meta;
       }
 
@@ -214,26 +237,55 @@
       const res = await (await fetch(listUrl)).json();
       if (!Array.isArray(res)) return;
       for (const folder of res) {
-        demos.push(await getMeta(folder.path));
+        const metas = await getMeta(folder.path);
+        if (!Array.isArray(metas)) continue;
+        metas.map(m => m.folder = folder.name);
+        demos.push(metas);
       }
       localStorage.setItem('miraplayer-demos', JSON.stringify(demos));
       localStorage.setItem('miraplayer-demos-updated', Date.now());
       return demos;
     }
 
+    const saveDraft = () => {
+      localStorage.setItem(draftKey, JSON.stringify(draft));
+    }
+
+    const reloaded = (save) => {
+      const creator = player.player.creator;
+      draft.json = JSON.stringify(creator.toJson(true), null, 2);
+      draft.miraml = creator.toMiraML(true);
+      if (save) saveDraft();
+      for (const item of tabs) {
+        item.model.setValue(draft[item.key]);
+      }
+      $reld.classList.remove('active');
+    }
+
+    const reset = async () => {
+      draft = {...demo};
+      localStorage.setItem(draftKey, draft);
+      await player.load({value: draft.miraml});
+      player.on('loadedmetadata', (e) => reloaded(false));
+    }
+
+    const setDemo = async (path, needReset=true) => {
+      demo = await getMeta(path);
+      localStorage.setItem(demoKey, JSON.stringify(demo));
+      if (needReset) reset();
+    }
+
     (async () => {
+      // todo: get demo from url hash
       if (!demo || !(demo.json || demo.miraml)) {
-        demo = await getMeta('demo/sample/mask.miraml');
-        localStorage.setItem(demoKey, JSON.stringify(demo));
+        await setDemo('demo/sample/mask.miraml', false);
       }
 
       if (!draft || !draft?.miraml) {
         draft = {...demo};
       }
 
-      const $reld = document.getElementById('reload');
-      const $edtr = document.getElementById('editor');
-      const editor = monaco.editor.create($edtr, {
+      editor = monaco.editor.create($edtr, {
         model: null,
         tabSize: 2,
         insertSpaces: true,
@@ -241,11 +293,6 @@
         minimap: { enabled: false }
       });
 
-      const tabs = [
-        {key: 'miraml', type: 'xml'},
-        {key: 'json', type: 'json'}
-      ];
-      let selected = tabs[0];
       for (const item of tabs) {
         item.tab = document.getElementById(`tab-${item.key}`);
         item.tab.onclick = (e) => {
@@ -268,25 +315,9 @@
         saveDraft();
       });
 
-      const $plyr = document.getElementById('player');
-      const player = miraplayer.create($plyr, {
+      player = miraplayer.create($plyr, {
         value: selected.model.getValue()
       });
-
-      const saveDraft = () => {
-        localStorage.setItem(draftKey, JSON.stringify(draft));
-      }
-
-      const reloaded = (save) => {
-        const creator = player.player.creator;
-        draft.json = JSON.stringify(creator.toJson(true), null, 2);
-        draft.miraml = creator.toMiraML(true);
-        if (save) saveDraft();
-        for (const item of tabs) {
-          item.model.setValue(draft[item.key]);
-        }
-        $reld.classList.remove('active');
-      }
 
       player.on('loadedmetadata', (e) => reloaded(false));
       document.getElementById('reload').onclick = async () => {
@@ -294,14 +325,8 @@
         player.on('loadedmetadata', (e) => reloaded(true));
       }
 
-      const $reset = document.getElementById('reset');
       $reset.style.display = 'block';
-      $reset.onclick = async () => {
-        draft = {...demo};
-        localStorage.setItem(draftKey, draft);
-        await player.load({value: draft.miraml});
-        player.on('loadedmetadata', (e) => reloaded(false));
-      }
+      $reset.onclick = () => reset();
 
       document.body.addEventListener('keydown', (e) => {
         if (e.code === 'KeyS' && e.composed && (e.metaKey || e.ctrlKey)) {
@@ -327,7 +352,25 @@
 
     (async () => {
       const list = await demoList();
-      console.log('demoList', list);
+      console.log('demoList', list, demo);
+      const options = [];
+      for (const folder of list) {
+        const opts = [];
+        for (item of folder) {
+          opts.push(`<option value="${item.path}" ${demo.path === item.path ? 'selected' : ''}>${item.name}</option>`);
+        }
+
+        if (opts.length > 1) {
+          options.push(`<optgroup label="${folder[0].folder}">${opts.join('')}</optgroup>`);
+        } else if (opts.length === 1) {
+          options.push(opts[0]);
+        }
+      }
+      const $selector = document.getElementById('select');
+      $selector.innerHTML = options.join('');
+      $selector.addEventListener('change', (e) => {
+        setDemo($selector.options[select.selectedIndex].value);
+      });
     })();
   </script>
 </body>
