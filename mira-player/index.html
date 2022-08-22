@@ -72,6 +72,9 @@
       min-height: 300px;
       background-color: #ccc;
       border: 1px solid #ccc;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='150px' width='460px'><text x='0' y='100' fill='white' font-size='100'>Loading...</text></svg>");
     }
     #reload {
       width: 64px;
@@ -102,6 +105,7 @@
       color: #FFF;
       padding: 5px 10px;
       margin: 3px;
+      display: none;
     }
     footer {
       width: 100%;
@@ -130,73 +134,6 @@
     </div>
     <div id="editor">
       <div id="reset">Reset</div>
-      <textarea id="draft">
-<miraml>
-  <canvas width="1280" height="720">
-    <spine>
-      <!-- Begin text from 0s to 2s -->
-      <text fontSize="80rpx" color="#FFF" x="50vw" y="50vh" lineHeight="90%" letterSpacing="10%"
-        fontFamily="https://miravideo.github.io/static/FangZhengHeiTi.ttf"
-        text="Ready?" duration="2">
-        <stroke color="#FFF" size="5%"></stroke>
-        <shadow color="#1FB0F9" alpha="1" offset="5%"></shadow>
-        <audio src="https://miravideo.github.io/static/ReadyGo.mp3">
-        </audio>
-      </text>
-      <trans key="fadecolor" duration="1.5"></trans>
-      <!-- Video from 2s to 12s -->
-      <scene>
-        <video x="50vw" y="50vh" height="100vh" zIndex="2" audio="false" 
-          src="https://miravideo.github.io/static/oceans.mp4" preload="true"
-          duration="10" ss="2">
-          <text fontSize="100rpx" color="#FFF" x="50vw" y="50vh" lineHeight="90%"
-            fontFamily="https://miravideo.github.io/static/FangZhengHeiTi.ttf"
-            asMask="true" duration="4">
-            <content>OCEAN</content>
-            <stroke color="#FFF" size="5%"></stroke>
-            <animate time="2" delay="2">
-              <from scale="1"></from>
-              <to scale="30" y="1500"></to>
-            </animate>
-          </text>
-          <animate time="0.5" delay="5">
-            <from scale="1"></from>
-            <to scale="0.2" y="150" x="250"></to>
-          </animate>
-          <animate time="0.5" delay="9">
-            <from x="50"></from>
-            <to x="-300"></to>
-          </animate>
-        </video>
-        <!-- Background Video -->
-        <video x="50vw" y="50vh" width="100vw" height="100vh" audio="false" 
-          src="https://miravideo.github.io/static/oceans.mp4" preload="true"
-          start="5" duration="5" ss="20">
-        </video>
-      </scene>
-      <trans key="fade" duration="1"></trans>
-      <video x="50vw" y="50vh" width="100vw" height="100vh" audio="false" 
-        src="https://miravideo.github.io/static/oceans.mp4" preload="true"
-        duration="5" ss="30" blur="10">
-        <text fontSize="60rpx" color="#FFF" x="50vw" y="45vh" lineHeight="90%"
-          fontFamily="https://miravideo.github.io/static/FangZhengHeiTi.ttf"
-          effect="zoomInDown" effectTime="1" opacity="0.8">
-          <content>Mira Player</content>
-          <stroke color="#FFF" size="5%"></stroke>
-        </text>
-        <text fontSize="20rpx" color="#FFF" x="50vw" y="70vh" lineHeight="90%"
-          fontFamily="https://miravideo.github.io/static/FangZhengHeiTi.ttf"
-          effect="zoomInUp" effectTime="1" opacity="0.6">
-          <content>Powered By FFCreator</content>
-          <stroke color="#FFF" size="5%"></stroke>
-        </text>
-      </video>
-    </spine>
-    <!-- BGM with fadeOut -->
-    <audio src="https://miravideo.github.io/static/oceans.mp3" duration="17" fadeOut="1">
-    </audio>
-  </canvas>
-</miraml></textarea>
     </div>
   </div>
   <footer>
@@ -210,6 +147,7 @@
   <script src="../monaco/min/vs/editor/editor.main.nls.js"></script>
   <script src="../monaco/min/vs/editor/editor.main.js"></script>
   <script>
+    const parser = new DOMParser();
     const draftKey = 'mira-player-draft';
     let draft;
     try {
@@ -217,105 +155,172 @@
     } catch (e) {
       localStorage.setItem(draftKey, null);
     }
-    if (!draft || !draft?.miraml) {
-      draft = { 
-        miraml: document.getElementById('draft').value,
-        json: '',
-      };
+
+    const demoKey = 'mira-player-demo';
+    let demo;
+    try {
+      demo = JSON.parse(localStorage.getItem(demoKey) || '{}');
+    } catch (e) {
+      localStorage.setItem(demoKey, null);
     }
 
-    const $reld = document.getElementById('reload');
-    const $edtr = document.getElementById('editor');
-    const editor = monaco.editor.create($edtr, {
-      model: null,
-      tabSize: 2,
-      insertSpaces: true,
-      automaticLayout: true,
-      minimap: { enabled: false }
-    });
-
-    const tabs = [
-      {key: 'miraml', type: 'xml'},
-      {key: 'json', type: 'json'}
-    ];
-    let selected = tabs[0];
-    for (const item of tabs) {
-      item.tab = document.getElementById(`tab-${item.key}`);
-      item.tab.onclick = (e) => {
-        if (item === selected) return;
-        selected.tab.classList.remove('select');
-        item.tab.classList.add('select');
-        selected.state = editor.saveViewState();
-        editor.setModel(item.model);
-        if (item.state) editor.restoreViewState(item.state);
-        editor.focus();
-        selected = item;
+    const getMeta = async (path) => {
+      const url = `https://api.github.com/repos/miravideo/miravideo.github.io/contents/${path}`;
+      const res = await (await fetch(url)).json();
+      const list = [];
+      for (const item of res) {
+        const res = await (await fetch(item.url)).json();
+        const content = atob(res.content);
+        let meta = {};
+        if (item.name.endsWith('.miraml')) {
+          const oDOM = parser.parseFromString(content, "application/xml");
+          if (oDOM.documentElement.nodeName.toLowerCase() !== 'miraml') continue;
+          for (let i = 0; i < oDOM.documentElement.attributes.length; i++) {
+            const attr = oDOM.documentElement.attributes[i]
+            meta[attr.name] = attr.value;
+          }
+          meta.miraml = content;
+        } else if (item.name.endsWith('.json')) {
+          const json = JSON.parse(content);
+          const {author, name, description} = json;
+          meta = {author, name, description, json};
+        }
+        if (!meta.author) continue;
+        meta.name = meta.name || item.name;
+        list.push(meta);
       }
-      item.model = monaco.editor.createModel(draft[item.key], item.type);
-    }
-    editor.setModel(selected.model);
-
-    editor.onDidChangeModelContent((e) => {
-      draft[selected.key] = editor.getValue();
-      $reld.classList.add('active');
-      saveDraft();
-    });
-
-    const $plyr = document.getElementById('player');
-    const player = miraplayer.create($plyr, {
-      value: selected.model.getValue()
-    });
-
-    const saveDraft = () => {
-      localStorage.setItem(draftKey, JSON.stringify(draft));
+      return list;
     }
 
-    const reloaded = (save) => {
-      const creator = player.player.creator;
-      draft.json = JSON.stringify(creator.toJson(), null, 2);
-      draft.miraml = creator.toMiraML();
-      if (save) saveDraft();
+    let demos = [];
+    const demoList = async () => {
+      try {
+        demos = JSON.parse(localStorage.getItem('miraplayer-demos'));
+      } catch (e) {
+        localStorage.setItem('miraplayer-demos', null);
+      }
+      const time = localStorage.getItem('miraplayer-demos-updated');
+      if (time && Date.now() - time < 86400 && demos.length > 0) return demos;
+
+      demos = [];
+      const listUrl = 'https://api.github.com/repos/miravideo/miravideo.github.io/contents/demo';
+      const res = await (await fetch(listUrl)).json();
+      if (!Array.isArray(res)) return;
+      for (const folder of res) {
+        demos.push(await getMeta(folder.path));
+      }
+      localStorage.setItem('miraplayer-demos', JSON.stringify(demos));
+      localStorage.setItem('miraplayer-demos-updated', Date.now());
+      return demos;
+    }
+
+    (async () => {
+      if (!demo) {
+        demo = (await getMeta('demo/Mask and transition'))[0];
+        localStorage.setItem(demoKey, JSON.stringify(demo));
+      }
+
+      if (!draft || !draft?.miraml) {
+        draft = {...demo};
+      }
+
+      const $reld = document.getElementById('reload');
+      const $edtr = document.getElementById('editor');
+      const editor = monaco.editor.create($edtr, {
+        model: null,
+        tabSize: 2,
+        insertSpaces: true,
+        automaticLayout: true,
+        minimap: { enabled: false }
+      });
+
+      const tabs = [
+        {key: 'miraml', type: 'xml'},
+        {key: 'json', type: 'json'}
+      ];
+      let selected = tabs[0];
       for (const item of tabs) {
-        item.model.setValue(draft[item.key]);
+        item.tab = document.getElementById(`tab-${item.key}`);
+        item.tab.onclick = (e) => {
+          if (item === selected) return;
+          selected.tab.classList.remove('select');
+          item.tab.classList.add('select');
+          selected.state = editor.saveViewState();
+          editor.setModel(item.model);
+          if (item.state) editor.restoreViewState(item.state);
+          editor.focus();
+          selected = item;
+        }
+        item.model = monaco.editor.createModel(draft[item.key], item.type);
       }
-      $reld.classList.remove('active');
-    }
+      editor.setModel(selected.model);
 
-    player.on('loadedmetadata', (e) => reloaded(false));
-    document.getElementById('reload').onclick = async () => {
-      await player.load({value: selected.model.getValue()});
-      player.on('loadedmetadata', (e) => reloaded(true));
-    }
+      editor.onDidChangeModelContent((e) => {
+        draft[selected.key] = editor.getValue();
+        $reld.classList.add('active');
+        saveDraft();
+      });
 
-    document.getElementById('reset').onclick = async () => {
-      draft = { 
-        miraml: document.getElementById('draft').value,
-        json: '',
-      };
-      localStorage.setItem(draftKey, draft);
-      await player.load({value: draft.miraml});
+      const $plyr = document.getElementById('player');
+      const player = miraplayer.create($plyr, {
+        value: selected.model.getValue()
+      });
+
+      const saveDraft = () => {
+        localStorage.setItem(draftKey, JSON.stringify(draft));
+      }
+
+      const reloaded = (save) => {
+        const creator = player.player.creator;
+        draft.json = JSON.stringify(creator.toJson(), null, 2);
+        draft.miraml = creator.toMiraML();
+        if (save) saveDraft();
+        for (const item of tabs) {
+          item.model.setValue(draft[item.key]);
+        }
+        $reld.classList.remove('active');
+      }
+
       player.on('loadedmetadata', (e) => reloaded(false));
-    }
-
-    document.body.addEventListener('keydown', (e) => {
-      if (e.code === 'KeyS' && e.composed && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        player.toast('Saved!');
+      document.getElementById('reload').onclick = async () => {
+        await player.load({value: selected.model.getValue()});
+        player.on('loadedmetadata', (e) => reloaded(true));
       }
-    });
 
-    // 避免快捷键冲突
-    $edtr.addEventListener('keydown', (e) => {
-      e.stopPropagation();
-      if (['KeyR', 'KeyS'].includes(e.code) && e.composed && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        document.getElementById('reload').onclick();
+      const $reset = document.getElementById('reset');
+      $reset.style.display = 'block';
+      $reset.onclick = async () => {
+        draft = {...demo};
+        localStorage.setItem(draftKey, draft);
+        await player.load({value: draft.miraml});
+        player.on('loadedmetadata', (e) => reloaded(false));
       }
-    });
-    $edtr.addEventListener('keyup', (e) => {
-      e.stopPropagation();
-    });
+
+      document.body.addEventListener('keydown', (e) => {
+        if (e.code === 'KeyS' && e.composed && (e.metaKey || e.ctrlKey)) {
+          e.preventDefault();
+          player.toast('Saved!');
+        }
+      });
+
+      // 避免快捷键冲突
+      $edtr.addEventListener('keydown', (e) => {
+        e.stopPropagation();
+        if (['KeyR', 'KeyS'].includes(e.code) && e.composed && (e.metaKey || e.ctrlKey)) {
+          e.preventDefault();
+          document.getElementById('reload').onclick();
+        }
+      });
+      $edtr.addEventListener('keyup', (e) => {
+        e.stopPropagation();
+      });
+    })();
 
     document.getElementById('version').innerHTML = player.version;
+
+    (async () => {
+      const list = await demoList();
+      console.log('demoList', list);
+    })();
   </script>
 </body>
