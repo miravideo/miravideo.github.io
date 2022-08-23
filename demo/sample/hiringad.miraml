@@ -47,14 +47,6 @@
       </text>
       <content> 福利待遇 </content>
     </text>
-    <text duration="6" backgroundColor="#F8E54D" fontSize="25rpx" color="#000" x="50vw" y="50vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" width="323.500rpx">
-      <text fontSize="38rpx" color="#FFF" x="50vw" y="58vh" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" width="323.500rpx">
-        <content>3000-18000/月</content>
-        <stroke color="#111111" size="10%"></stroke>
-        <effect name="zoomInDown" time="1" delay="1"></effect>
-      </text>
-      <content> 薪资 </content>
-    </text>
     <text start="6" backgroundColor="#F8E54D" fontSize="25rpx" color="#000" x="50vw" y="30vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" width="323.500rpx">
       <text fontSize="35rpx" color="#FFF" x="50vw" y="38vh" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" width="323.500rpx">
         <content>138-1888-1888</content>

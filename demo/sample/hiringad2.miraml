@@ -1,0 +1,59 @@
+<miraml version="1.1" author="ZhaoJun" name="Hiring Ad">
+  <canvas width="1280" height="720">
+    <spine></spine>
+    <audio audio="true" src="https://afu-1255830993.cos.ap-shanghai.myqcloud.com/files/7b/31/7b31a73068549965fdb85c29c81b39ed.mp3" loop="true" fadeOut="1"></audio>
+    <image x="50vw" y="50vh" width="100vw" height="100vh" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/face_girl.png" blur="20">
+      <image x="50vh" y="50vh" height="100vh" width="100vh" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/sample_g2.jpg"></image>
+      <image start="3" x="50vh" y="50vh" height="100vh" width="100vh" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/sample_g2.jpg">
+        <effect name="backInLeft" time="1"></effect>
+      </image>
+      <image start="6" x="50vh" y="50vh" height="100vh" width="100vh" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/sample_g2.jpg">
+        <effect name="backInLeft" time="1"></effect>
+      </image>
+    </image>
+    <text align="left" wrap="true" width="38vw" fontSize="10rpx" color="#FFFFFF" x="60vw" y="7vh" lineHeight="120%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" anchor="[0,0.5]">
+      <content>上海某科技有限公司</content>
+      <stroke color="#111111" size="10%"></stroke>
+    </text>
+    <text align="left" fontSize="20rpx" color="#4DF8E5" x="60vw" y="20vh" lineHeight="90%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" anchor="[0,0.5]">
+      <content>招聘人才</content>
+      <stroke color="#111111" size="10%"></stroke>
+    </text>
+    <text align="left" duration="6" backgroundColor="#4DF8E5" fontSize="15rpx" color="#000" x="60vw" y="32vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" anchor="[0,0.5]">
+      <text align="left" fontSize="16rpx" color="#FFF" x="60vw" y="45vh" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" anchor="[0,0.5]">
+        <content>高级网络工程师</content>
+        <stroke color="#111111" size="10%"></stroke>
+        <effect name="backInRight" time="1"></effect>
+        <effect name="backOutRight" time="1" delay="5"></effect>
+      </text>
+      <content> 职位 </content>
+      <effect name="backOutRight" time="1" delay="5"></effect>
+    </text>
+    <text align="left" duration="6" backgroundColor="#4DF8E5" fontSize="15rpx" color="#000" x="60vw" y="65vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" anchor="[0,0.5]">
+      <text align="left" fontSize="18rpx" color="#FFF" x="60vw" y="78vh" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" anchor="[0,0.5]">
+        <content>3000-18000/月</content>
+        <stroke color="#111111" size="10%"></stroke>
+        <effect name="backInRight" time="1" delay="1"></effect>
+        <effect name="backOutRight" time="1" delay="5"></effect>
+      </text>
+      <content> 薪资 </content>
+      <effect name="backOutRight" time="1" delay="5"></effect>
+    </text>
+    <text align="left" start="6" backgroundColor="#4DF8E5" fontSize="15rpx" color="#000" x="60vw" y="32vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" anchor="[0,0.5]">
+      <text wrap="true" width="38vw" align="left" fontSize="12rpx" color="#FFF" x="60vw" y="45vh" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" anchor="[0,0.5]">
+        <content>五险一金 包吃包住 带薪年假 年底双薪</content>
+        <stroke color="#111111" size="10%"></stroke>
+        <effect name="backInRight" time="1"></effect>
+      </text>
+      <content> 福利待遇 </content>
+    </text>
+    <text align="left" start="6" backgroundColor="#4DF8E5" fontSize="15rpx" color="#000" x="60vw" y="65vh" lineHeight="120%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" anchor="[0,0.5]">
+      <text align="left" fontSize="13rpx" color="#FFF" x="60vw" y="78vh" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengFangSong.ttf" anchor="[0,0.5]">
+        <content>138-0013-8000</content>
+        <stroke color="#111111" size="10%"></stroke>
+        <effect name="backInRight" time="1" delay="1"></effect>
+      </text>
+      <content> 联系方式 </content>
+    </text>
+  </canvas>
+</miraml>
