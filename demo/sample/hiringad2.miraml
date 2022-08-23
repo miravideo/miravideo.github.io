@@ -1,4 +1,4 @@
-<miraml version="1.1" author="ZhaoJun" name="Hiring Ad">
+<miraml version="1.1" author="ZhaoJun" name="Hiring Ad(16:9)">
   <canvas width="1280" height="720">
     <spine></spine>
     <audio audio="true" src="https://afu-1255830993.cos.ap-shanghai.myqcloud.com/files/7b/31/7b31a73068549965fdb85c29c81b39ed.mp3" loop="true" fadeOut="1"></audio>
