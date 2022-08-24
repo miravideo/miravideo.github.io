@@ -1,5 +1,5 @@
 <miraml author="ZhaoJun" name="Composite">
-  <canvas width="1280" height="720">
+  <canvas width="1280" height="720" mute="true">
     <spine>
       <text fontSize="80rpx" color="#FFF" x="50vw" y="50vh" lineHeight="90%" letterSpacing="10%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" duration="2">
         <audio src="https://cos.mirav.cn/player/ReadyGo.mp3"></audio>
@@ -9,7 +9,7 @@
       </text>
       <trans duration="1.5" key="fadecolor"></trans>
       <scene>
-        <video loop="false" audio="false" x="50vw" y="50vh" height="100vh" zIndex="2" src="https://cos.mirav.cn/player/pic_oceans.mp4" duration="10" ss="2">
+        <video loop="false" audio="false" x="50vw" y="50vh" height="100vh" zIndex="2" src="pic_oceans.mp4" duration="10" ss="2">
           <text fontSize="100rpx" color="#FFF" x="50vw" y="50vh" lineHeight="90%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" asMask="true" duration="4">
             <content>OCEAN</content>
             <stroke color="#FFF" size="5%"></stroke>
@@ -27,10 +27,10 @@
             <to x="-300"></to>
           </animate>
         </video>
-        <video loop="false" audio="false" x="50vw" y="50vh" width="100vw" height="100vh" src="https://cos.mirav.cn/player/pic_oceans.mp4" start="5" duration="5" ss="20"></video>
+        <video loop="false" audio="false" x="50vw" y="50vh" width="100vw" height="100vh" src="pic_oceans.mp4" start="5" duration="5" ss="20"></video>
       </scene>
       <trans duration="1" key="fade"></trans>
-      <video loop="false" audio="false" x="50vw" y="50vh" width="100vw" height="100vh" src="https://cos.mirav.cn/player/pic_oceans.mp4" duration="5" ss="30" blur="10">
+      <video loop="false" audio="false" x="50vw" y="50vh" width="100vw" height="100vh" src="pic_oceans.mp4" duration="5" ss="30" blur="10">
         <text fontSize="60rpx" color="#FFF" x="50vw" y="45vh" lineHeight="90%" fontFamily="https://cos.mirav.cn/fonts/FangZhengHeiTi.ttf" effect="zoomInDown" effectTime="1" opacity="0.8">
           <content>Mira Player</content>
           <stroke color="#FFF" size="5%"></stroke>
