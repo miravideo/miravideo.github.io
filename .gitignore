@@ -6,3 +6,5 @@ package-lock.json
 config.js
 .vscode
 yarn.lock
+mixin
+mira-editor/mira-table.js
