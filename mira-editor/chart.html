@@ -141,11 +141,22 @@
     </div>
     <div id="editor">
       <textarea id="draft">
+        <!-- <miraml author="ZhaoJun" name="Composite" mns="http://localhost:8888/mixin/">
+          <canvas width="1280" height="720">
+            <spine></spine>
+            <mixin-echart refId="chart-demo" x="50vw" y="50vh" width="1100" height="600" 
+              movieType="move" preload="false" version="1.0.1" 
+              theme="dark" opacity="0.8" zIndex="9" speed="5" duration="15" 
+              template="http://localhost:8888/mira-editor/chart-template-01.tpl" 
+              data="http://localhost:8888/mira-editor/chart-data-01.json">
+            </mixin-echart>
+          </canvas>
+        </miraml> -->
 <miraml author="ZhaoJun" name="Composite" mns="https://cos.mirav.cn/player/">
   <canvas width="1280" height="720">
     <spine></spine>
     <mixin-echart refId="chart-demo" x="50vw" y="50vh" width="1100" height="600" movieType="move"   
-      theme="dark" opacity="0.8" zIndex="9" speed="5" duration="15" version="1.0.1"
+      theme="dark" opacity="0.8" zIndex="9" speed="5" duration="15" version="1.0.2"
       template="https://cos.mirav.cn/player/chart-template-01.tpl" 
       data="https://cos.mirav.cn/player/chart-data-01.json">
     </mixin-echart>
@@ -208,20 +219,6 @@
 
     player.on('changed', (e) => {
       //reloaded();
-    });
-
-    // 避免快捷键冲突
-    $edtr.addEventListener('keydown', (e) => {
-      if (['KeyY', 'KeyZ'].includes(e.code)) return;
-      e.stopPropagation();
-      if (['KeyR'].includes(e.code) && e.composed && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        // document.getElementById('reload').onclick();
-      }
-    });
-    $edtr.addEventListener('keyup', (e) => {
-      if (['KeyY', 'KeyZ'].includes(e.code)) return;
-      e.stopPropagation();
     });
 
     document.getElementById('version').innerHTML = player.version;
