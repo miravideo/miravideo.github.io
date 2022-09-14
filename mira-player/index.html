@@ -85,13 +85,17 @@
       background-repeat: no-repeat;
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='150px' width='460px'><text x='0' y='100' fill='white' font-size='100' font-family='Monaco'>Loading...</text></svg>");
     }
-    #reload {
+    #btns {
+      width: 64px;
+    }
+    #reload, #export {
       width: 64px;
       height: 64px;
       border-radius: 50%;
       overflow: hidden;
       cursor: pointer;
       color: #666;
+      margin: 30px 0;
     }
     #reload.active {
       background-color: #1FB0F9;
@@ -139,8 +143,13 @@
   </div>
   <div id="main">
     <div id="player"></div>
-    <div id="reload">
-      <?xml version="1.0" encoding="UTF-8"?><svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M27 33L18 24L27 15" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div id="btns">
+      <div id="reload">
+        <?xml version="1.0" encoding="UTF-8"?><svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M27 33L18 24L27 15" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div id="export" title="Export MP4">
+        <?xml version="1.0" encoding="UTF-8"?><svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M24 15V33" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 24L24 33L15 24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
     </div>
     <div id="editor">
       <div id="reset">Reset</div>
@@ -152,7 +161,7 @@
   </footer>
   <script>var require = { paths: { 'vs': '../monaco/min/vs' } };</script>
   <!-- <script src="http://localhost:9988/dist/miraplayer.js"></script> -->
-  <script src="./miraplayer.min.1_3_7.js"></script>
+  <script src="./miraplayer.min.1_3_8.js"></script>
   <script src="../monaco/min/vs/loader.js"></script>
   <script src="../monaco/min/vs/editor/editor.main.nls.js"></script>
   <script src="../monaco/min/vs/editor/editor.main.js"></script>
@@ -316,6 +325,7 @@
       });
 
       player = miraplayer.create($plyr, {
+        export: true,
         value: selected.model.getValue()
       });
 
@@ -323,6 +333,10 @@
       document.getElementById('reload').onclick = async () => {
         await player.load({value: selected.model.getValue()});
         player.on('loadedmetadata', (e) => reloaded(true));
+      }
+
+      document.getElementById('export').onclick = async () => {
+        player.export('miraml_export.mp4');
       }
 
       $reset.style.display = 'block';
